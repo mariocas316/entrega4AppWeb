@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package product;
+
+// Servicio gRPC para gestionar instancias de la clase Producto con operaciones CRUD
+service ProductService {
+  // Crear un producto
+  rpc CreateProduct (CreateProductRequest) returns (ProductResponse);
+  
+  // Obtener un producto por su ID único
+  rpc GetProduct (GetProductRequest) returns (ProductResponse);
+  
+  // Listar todos los productos en tiempo real
+  rpc ListProducts (EmptyRequest) returns (ListProductsResponse);
+  
+  // Actualizar un producto existente (campos opcionales)
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse);
+  
+  // Eliminar un producto por su ID único
+  rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse);
+}
+
+// Mensaje vacío
+message EmptyRequest {}
+
+// Solicitud para crear un producto
+message CreateProductRequest {
+  string nombre = 1;
+  string descripcion = 2;
+  float precio = 3;
+}
+
+// Solicitud para consultar un producto
+message GetProductRequest {
+  int32 id = 1;
+}
+
+// Solicitud para actualizar un producto (campos opcionales para parchear)
+message UpdateProductRequest {
+  int32 id = 1;
+  optional string nombre = 2;
+  optional string descripcion = 3;
+  optional float precio = 4;
+}
+
+// Solicitud para eliminar un producto
+message DeleteProductRequest {
+  int32 id = 1;
+}
+
+// Respuesta al eliminar un producto
+message DeleteProductResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Estructura estándar del Producto en gRPC
+message ProductResponse {
+  int32 id = 1;
+  string nombre = 2;
+  string descripcion = 3;
+  float precio = 4;
+}
+
+// Respuesta con el listado completo de productos
+message ListProductsResponse {
+  repeated ProductResponse productos = 1;
+}
