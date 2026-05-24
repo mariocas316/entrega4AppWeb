@@ -1,57 +1,53 @@
-# Catálogo de Productos - Servidor GraphQL (Clean Architecture)
+# GraphQL App - Guia de ejecucion
 
-Esta aplicación web implementa un servicio API GraphQL declarativo completo para la gestión de productos, utilizando **FastAPI**, **Strawberry GraphQL** y **SQLAlchemy** con **SQLite**.
+Servicio API GraphQL para gestion de productos con FastAPI, Strawberry y SQLite.
 
-El proyecto está estructurado bajo los principios de **Arquitectura Limpia (Clean Architecture)** para asegurar que las reglas de negocio estén aisladas de la base de datos y de la forma de entrega (web/protocolo).
+## Requisitos
 
----
+- Python 3.10 o superior
+- Entorno virtual activo
 
-## Arquitectura de Capas
+Si estas en la raiz del repositorio, puedes activar el entorno asi:
 
-El código está organizado de la siguiente manera:
-1. **Dominio (`app/domain`)**: Contiene la entidad `Producto` y el puerto (interfaz abstracta) `ProductRepository`.
-2. **Aplicación (`app/application`)**: Implementa los Casos de Uso del CRUD de productos de manera agnóstica a los frameworks.
-3. **Adaptadores (`app/adapters`)**:
-   * **database**: Implementación de base de datos con SQLAlchemy (`SQLAlchemyProductRepository`) mapeando a la tabla SQLite.
-   * **graphql**: Definición de los esquemas, tipos y resolvers de Strawberry GraphQL.
-4. **Infraestructura (`app/infrastructure`)**: Conexión de base de datos, configuración y montaje del servidor web FastAPI.
+```bash
+# Windows (PowerShell)
+.\venv\Scripts\activate
 
----
+# macOS/Linux
+source venv/bin/activate
+```
 
-## Requisitos de Instalación
+## Instalar dependencias
 
-1. Asegúrate de tener Python 3.10+ instalado.
-2. Crea un entorno virtual e instala las dependencias:
-   ```bash
-   python -m venv venv
-   # En Windows:
-   .\venv\Scripts\activate
-   # En macOS/Linux:
-   source venv/bin/activate
-   
-   pip install -r requirements.txt
-   ```
+Desde esta carpeta (`graphql_app`):
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## Ejecución del Servidor
+## Ejecutar servidor
 
-Para arrancar el servidor de desarrollo, ejecuta el siguiente comando desde el directorio `graphql_app`:
 ```bash
 python -m app.main
 ```
-El servidor se iniciará en `http://localhost:8000`.
 
----
+Servidor y playground:
 
-## Pruebas con GraphiQL
+- API base: http://localhost:8000
+- GraphiQL: http://localhost:8000/graphql
 
-Abre tu navegador y navega a:
-[http://localhost:8000/graphql](http://localhost:8000/graphql)
+## Ejecutar prueba automatizada
 
-Allí podrás ejecutar las siguientes operaciones declarativas de prueba:
+En otra terminal (con el entorno virtual activo):
 
-### 1. Crear un Producto (Mutation)
+```bash
+python test_graphql.py
+```
+
+## Operaciones de prueba en GraphiQL
+
+### Crear producto
+
 ```graphql
 mutation {
   crearProducto(input: {
@@ -67,7 +63,8 @@ mutation {
 }
 ```
 
-### 2. Listar Todos los Productos (Query)
+### Listar productos
+
 ```graphql
 query {
   obtenerProductos {
@@ -78,7 +75,8 @@ query {
 }
 ```
 
-### 3. Obtener un Producto por ID (Query)
+### Obtener producto por ID
+
 ```graphql
 query {
   obtenerProducto(id: 1) {
@@ -90,12 +88,13 @@ query {
 }
 ```
 
-### 4. Actualizar un Producto (Mutation)
+### Actualizar producto
+
 ```graphql
 mutation {
   actualizarProducto(input: {
     id: 1,
-    nombre: "Laptop Pro 16 Plus",
+    nombre: "Laptop Pro 16 Gen2",
     precio: 1599.99
   }) {
     id
@@ -105,24 +104,14 @@ mutation {
 }
 ```
 
-### 5. Eliminar un Producto (Mutation)
+### Eliminar producto
+
 ```graphql
 mutation {
   eliminarProducto(id: 1)
 }
 ```
 
-### 6. Prueba de Manejo de Errores
-Intenta crear un producto con precio negativo:
-```graphql
-mutation {
-  crearProducto(input: {
-    nombre: "Producto Erróneo",
-    precio: -50.0
-  }) {
-    id
-    nombre
-  }
-}
-```
-*Deberías ver un error controlado indicando que el precio no puede ser negativo.*
+## Nota
+
+Para una guia unificada de todo el repositorio (GraphQL + gRPC), revisa el README de la raiz.

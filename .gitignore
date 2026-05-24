@@ -124,3 +124,16 @@ Active/
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Project-specific files not required for delivery
+GUION_VIDEO.md
+.env
+.env.*
+*.sqlite3
+
+# Recording/export artifacts
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
